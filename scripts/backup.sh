@@ -34,7 +34,6 @@ if [ "${incremental}" = true ]; then
     fi
 fi
 
-mkdir -p "${current_dir}"
 printf "$(${log_prefix}) INFO: starting";
 
 if [ "${run_incremental}" = true ]; then
