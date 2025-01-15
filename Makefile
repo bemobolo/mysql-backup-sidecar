@@ -26,7 +26,7 @@ rebuild: rebuild-mysql rebuild-mariadb ## build docker image without cache
 
 .PHONY: build-mysql
 build-mysql: set-script-permissions ## build docker image
-	docker build --platform $(PLATFORM) -t "$(IMAGE_NAME):$(VERSION_TAG)-mysql-8.0" -f mysql/8.0/Dockerfile .
+	docker build --platform $(PLATFORM) -t "$(IMAGE_NAME):$(VERSION_TAG)-mysql-8.4" -f mysql/8.4/Dockerfile .
 
 .PHONY: build-mariadb
 build-mariadb: set-script-permissions ## build docker image
@@ -44,8 +44,8 @@ rebuild-mariadb: ## build docker image without cache
 
 .PHONY: runmysql
 runmysql: ## run the example docker compose stack on MySQL
-	VERSION_TAG=$(VERSION_TAG)-mysql-8.0 \
-	DB_IMAGE=mysql:8.0.34 \
+	VERSION_TAG=$(VERSION_TAG)-mysql-8.4 \
+	DB_IMAGE=mysql:8.4.3 \
 	$(DOCKER_COMPOSE_DEV) up
 
 .PHONY: runmariadb

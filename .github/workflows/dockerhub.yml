@@ -18,7 +18,7 @@ on:
 env:
   IMAGE_NAME: woolfg/mysql-backup-sidecar
   DOCKER_PLATFORMS: linux/amd64
-  DOCKERFILE: mysql/8.0/Dockerfile
+  DOCKERFILE: mysql/8.4/Dockerfile
 
 jobs:
   build:
@@ -31,8 +31,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - dockerfile: ./mysql/8.0/Dockerfile
-            suffix: -mysql-8.0
+          - dockerfile: ./mysql/8.4/Dockerfile
+            suffix: -mysql-8.4
           - dockerfile: ./mariadb/10.9/Dockerfile
             suffix: -mariadb-10.9
           - dockerfile: ./mariadb/10.8/Dockerfile
