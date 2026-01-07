@@ -6,12 +6,17 @@ PROJECT := mysql-backup-sidecar
 DOCKER_COMPOSE_DEV := docker compose -p $(PROJECT) -f examples/docker-compose.yml -f examples/docker-compose.dev.yml
 
 VERSION_TAG := $(shell git describe HEAD)
+PLATFORM := "linux/x86_64"
 
 export
 
 .PHONY: help
 help: ## help message, list all command
 	@echo -e "$$(grep -hE '^\S+:.*##' $(MAKEFILE_LIST) | sed -e 's/:.*##\s*/:/' -e 's/^\(.\+\):\(.*\)/\\x1b[36m\1\\x1b[m:\2/' | column -c2 -t -s :)"
+
+.PHONY: set-script-permissions
+set-script-permissions: ## mark scripts as executable
+	chmod +x scripts/*.sh
 
 .PHONY: build
 build: build-mysql build-mariadb ## build docker image
@@ -20,11 +25,11 @@ build: build-mysql build-mariadb ## build docker image
 rebuild: rebuild-mysql rebuild-mariadb ## build docker image without cache
 
 .PHONY: build-mysql
-build-mysql: ## build docker image
-	docker build -t "$(IMAGE_NAME):$(VERSION_TAG)-mysql-8.0" -f mysql/8.0/Dockerfile .
+build-mysql: set-script-permissions ## build docker image
+	docker build --platform $(PLATFORM) -t "$(IMAGE_NAME):$(VERSION_TAG)-mysql-8.0" -f mysql/8.0/Dockerfile .
 
 .PHONY: build-mariadb
-build-mariadb: ## build docker image
+build-mariadb: set-script-permissions ## build docker image
 	docker build -t "$(IMAGE_NAME):$(VERSION_TAG)-mariadb-10.4" -f mariadb/10.4/Dockerfile .
 	docker build -t "$(IMAGE_NAME):$(VERSION_TAG)-mariadb-10.5" -f mariadb/10.5/Dockerfile .
 	docker build -t "$(IMAGE_NAME):$(VERSION_TAG)-mariadb-10.8" -f mariadb/10.8/Dockerfile .
